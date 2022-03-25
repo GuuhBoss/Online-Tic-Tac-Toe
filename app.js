@@ -20,7 +20,7 @@ io.on("connection", (sock) => {
   sock.emit("message", "Hi you are connected");
 
   sock.on("click", (squarenum) => {
-    sock.broadcast.emit("click", (squarenum));
+    sock.broadcast.emit("click", squarenum);
   });
 
   sock.on("hello", (data) => {
@@ -30,7 +30,7 @@ io.on("connection", (sock) => {
 
 app.use(express.static(path.join(__dirname, "./frontend/build/")));
 
-app.get("/", function (_, res) {
+app.get("*", function (_, res) {
   res.sendFile(
     path.join(__dirname, "./frontend/build/index.html"),
     function (err) {
