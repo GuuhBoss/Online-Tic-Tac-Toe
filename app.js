@@ -1,14 +1,14 @@
 const express = require("express");
 const path = require("path");
 require("dotenv").config();
-const socketio = require("socket.io");
+const sockio = require("socket.io");
 const port = process.env.PORT || 8000;
 const app = express();
 const server = app.listen(port, () => {
   console.log(`The server is running on port: ${port}`);
 });
 
-const io = socketio(server, {
+const io = sockio(server, {
   cors: {
     origin: "*",
   },
@@ -25,6 +25,19 @@ io.on("connection", (sock) => {
 
   sock.on("hello", (data) => {
     console.log(data);
+  });
+
+  sock.on("join_room", (data) => {
+    sock.join(data);
+    console.log(`User with ID: ${sock.id} joined room: ${data}`);
+  });
+
+  sock.on("send_message", (data) => {
+    sock.to(data.room).emit("receive_message", data);
+  });
+
+  sock.on("disconnect", () => {
+    console.log("User Disconnected", sock.id);
   });
 });
 

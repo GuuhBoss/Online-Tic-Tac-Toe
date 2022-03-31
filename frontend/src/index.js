@@ -1,14 +1,11 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import "./index.css";
-//import App from './App';
 import TicTacToe from "./core/TicTacToe";
+import "./index.css";
 
 ReactDOM.render(
-  <>
-    {/* <App /> */}
-
+  <div>
     <TicTacToe />
-  </>,
+  </div>,
   document.getElementById("root")
 );

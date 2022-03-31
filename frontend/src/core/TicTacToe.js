@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { io } from "socket.io-client";
 import { useStateWithCallbackLazy } from "use-state-with-callback";
+import Room from "./Room";
 
 //Connecting socket with backend
 const sock = io("http://localhost:8000");
@@ -24,10 +25,10 @@ const TicTacToe = () => {
     });
   };
 
-  const Draw = (square) => {
+  const Draw = (squares) => {
     // console.log(square.includes(undefined));
 
-    if (square.includes("") === false) {
+    if (squares.includes("") === false) {
       setValues({ ...values, Draw: true });
     }
   };
@@ -100,6 +101,7 @@ const TicTacToe = () => {
     sock.emit("click", square);
   };
   useEffect(() => {
+    console.log("entered useEffect Win and Draw", values.cells);
     // Looking for a draw or a win every time values.cells changes
     Win(values.cells);
     Draw(values.cells);
@@ -123,8 +125,9 @@ const TicTacToe = () => {
     sock.on("connect", () => {
       console.log("Connected to the server");
       sock.emit("hello", "Hi from frontend");
+      console.log("tic", sock);
     });
-  }, []);
+  });
 
   useEffect(() => {
     sock.on("message", (msg) => {
@@ -143,40 +146,53 @@ const TicTacToe = () => {
   return (
     <>
       <div className="container">
-        Turn: {values.click}
-        <table>
-          <tbody>
-            {/* <th>TicTacToe</th> */}
-            <tr>
-              <Cell num={0} />
-              <Cell num={1} />
-              <Cell num={2} />
-            </tr>
-            <tr>
-              <Cell num={3} />
-              <Cell num={4} />
-              <Cell num={5} />
-            </tr>
-            <tr>
-              <Cell num={6} />
-              <Cell num={7} />
-              <Cell num={8} />
-            </tr>
-          </tbody>
-        </table>
-        <p>{values.text}</p>
-        {values.winner && (
-          <div>
-            <p> {values.winner} ganhou!</p>
-            <button onClick={Restart}>Recomeçar</button>
+        <div className="row">
+          <div className="col">
+            Turn: {values.click}
+            <table>
+              <tbody>
+                {/* <th>TicTacToe</th> */}
+                <tr>
+                  <Cell num={0} />
+                  <Cell num={1} />
+                  <Cell num={2} />
+                </tr>
+                <tr>
+                  <Cell num={3} />
+                  <Cell num={4} />
+                  <Cell num={5} />
+                </tr>
+                <tr>
+                  <Cell num={6} />
+                  <Cell num={7} />
+                  <Cell num={8} />
+                </tr>
+              </tbody>
+            </table>
+            <p>{values.text}</p>
           </div>
-        )}
-        {values.Draw && (
-          <div>
-            <p> Empatou! </p>
-            <button onClick={Restart}>Recomeçar</button>
+          <div className="col">
+            <Room socket={sock} />
           </div>
-        )}
+        </div>
+        <div className="row">
+          <div>
+            {values.winner && (
+              <div>
+                <p> "{values.winner}" You Won!</p>
+                <button onClick={Restart} className="btn btn-success">
+                  Restart
+                </button>
+              </div>
+            )}
+            {values.Draw && (
+              <div>
+                <p> Draw! </p>
+                <button onClick={Restart}>Restart</button>
+              </div>
+            )}
+          </div>
+        </div>
       </div>
     </>
   );
