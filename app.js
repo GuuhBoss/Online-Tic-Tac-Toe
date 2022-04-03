@@ -23,10 +23,6 @@ io.on("connection", (sock) => {
     sock.broadcast.emit("click", squarenum);
   });
 
-  sock.on("hello", (data) => {
-    console.log(data);
-  });
-
   sock.on("join_room", (data) => {
     sock.join(data);
     console.log(`User with ID: ${sock.id} joined room: ${data}`);

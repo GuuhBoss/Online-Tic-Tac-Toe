@@ -101,7 +101,6 @@ const TicTacToe = () => {
     sock.emit("click", square);
   };
   useEffect(() => {
-    console.log("entered useEffect Win and Draw", values.cells);
     // Looking for a draw or a win every time values.cells changes
     Win(values.cells);
     Draw(values.cells);
@@ -124,9 +123,6 @@ const TicTacToe = () => {
   useEffect(() => {
     sock.on("connect", () => {
       console.log("Connected to the server");
-      sock.emit("hello", "Hi from frontend");
-      console.log("tic", sock);
-    });
   });
 
   useEffect(() => {

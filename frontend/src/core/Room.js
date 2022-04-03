@@ -8,7 +8,7 @@ function Room({ socket }) {
 
   const joinRoom = () => {
     if (username !== "" && room !== "") {
-      console.log("entrei aqui", socket);
+     // console.log("entrei aqui", socket);
       socket.emit("join_room", room);
       setShowChat(true);
     }
