@@ -4,7 +4,7 @@ import { useStateWithCallbackLazy } from "use-state-with-callback";
 import Room from "./Room";
 
 //Connecting socket with backend
-const sock = io("/");
+const sock = io(process.env.IO);
 
 const TicTacToe = () => {
   const [values, setValues] = useStateWithCallbackLazy({
@@ -123,6 +123,7 @@ const TicTacToe = () => {
   useEffect(() => {
     sock.on("connect", () => {
       console.log("Connected to the server");
+    });
   });
 
   useEffect(() => {
