@@ -4,7 +4,7 @@ import { useStateWithCallbackLazy } from "use-state-with-callback";
 import Room from "./Room";
 
 //Connecting socket with backend
-const sock = io("http://localhost:8000");
+const sock = io("/");
 
 const TicTacToe = () => {
   const [values, setValues] = useStateWithCallbackLazy({
